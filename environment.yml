@@ -8,4 +8,6 @@ dependencies:
   - pandas
   - numpy
   - sqlite
+  - requests
+  - pyyaml
 prefix: /home/sdysch/miniconda3/envs/sa_db
