@@ -1,5 +1,6 @@
 import sqlite3
 import pandas as pd
+import hashlib
 
 from utils import read_config, get_connection
 
@@ -75,15 +76,56 @@ def insert_from_brb_file(filename, config):
     conn.close()
 
 
+def insert_from_google(config):
+
+    id = config['google_sheets_id']
+    path = f'https://docs.google.com/spreadsheets/d/{id}/gviz/tq?tqx=out:csv'
+    df = pd.read_csv(
+       path,
+       parse_dates=['date'],
+       index_col=False
+    )
+
+    # generate an exercise ID by hashing the date. Not a great solution because this assumes that we will only ever be doing 1 exercise per day
+    def hash_val(x):
+        return hashlib.sha256(str(x).encode()).hexdigest()
+
+    df['exercise_id'] = df['date'].apply(hash_val)
+
+    df['timestamp'] = df['date']
+    df['target_duration_seconds'] = df['target_min'] * 60.
+    df['actual_duration_seconds'] = df['actual_min'] * 60.
+
+    df = df[[
+        'exercise_id',
+        'timestamp',
+        'rating',
+        'target_duration_seconds',
+        'actual_duration_seconds',
+        'notes'
+    ]]
+
+    conn = get_connection(config['db_name'])
+    cursor = conn.cursor()
+
+    df.to_sql('departures', conn, if_exists='append', index=False)
+
+    conn.commit()
+    conn.close()
+
+
 def main(args):
 
     config = read_config('config.yml')
 
-    if not args.no_setup:
+    if args.setup:
         create_db(config)
 
     if args.read_brb_file is not None:
         insert_from_brb_file(args.read_brb_file, config)
+
+    if args.read_google_sheets:
+        insert_from_google(config)
 
 
 if __name__ == '__main__':
@@ -91,8 +133,9 @@ if __name__ == '__main__':
     from argparse import ArgumentParser
     parser = ArgumentParser()
 
-    parser.add_argument('--no-setup', action='store_true')
+    parser.add_argument('--setup', action='store_true')
     parser.add_argument('--read-brb-file', required=False, default=None)
+    parser.add_argument('--read-google-sheets', action='store_true')
 
     args = parser.parse_args()
 
