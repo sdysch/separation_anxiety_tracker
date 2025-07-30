@@ -1,2 +1,4 @@
 secrets.yml
 data/*.csv
+*.json
+*.png

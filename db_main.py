@@ -1,17 +1,13 @@
 import sqlite3
 import pandas as pd
 
-DB_NAME = 'sa_training.db'
+from utils import read_config, get_connection
 
-def get_connection(name):
-    conn = sqlite3.connect(DB_NAME)
 
-    return conn
-
-def create_db():
+def create_db(config):
 
     # connect to SQLite database (or create it)
-    conn = get_connection(DB_NAME)
+    conn = get_connection(config['db_name'])
     cursor = conn.cursor()
 
     # create table for departures
@@ -45,7 +41,7 @@ def create_db():
     conn.close()
 
 
-def insert_from_file(filename):
+def insert_from_file(filename, config):
 
     df = pd.read_csv(
         filename,
@@ -70,7 +66,7 @@ def insert_from_file(filename):
         }
     )
 
-    conn = get_connection(DB_NAME)
+    conn = get_connection(config['db_name'])
     cursor = conn.cursor()
 
     df.to_sql('departures', conn, if_exists='append', index=False)
@@ -81,11 +77,13 @@ def insert_from_file(filename):
 
 def main(args):
 
+    config = read_config('config.yml')
+
     if not args.no_setup:
-        create_db()
+        create_db(config)
 
     if args.read_file is not None:
-        insert_from_file(args.read_file)
+        insert_from_file(args.read_file, config)
 
 
 if __name__ == '__main__':

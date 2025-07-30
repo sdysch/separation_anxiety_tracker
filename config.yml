@@ -1,0 +1,4 @@
+db_name: 'sa_training.db'
+url: 'https://berightbackapp.io/owner/v3/exercises?type=DepartureExercise'
+raw_data: 'data/raw_brb_data.csv'
+json_data: 'data/departures_data.json'
