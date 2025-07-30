@@ -86,6 +86,8 @@ def insert_from_google(config):
        index_col=False
     )
 
+    df['notes'] = df['notes'].fillna('')
+
     # generate an exercise ID by hashing the date. Not a great solution because this assumes that we will only ever be doing 1 exercise per day
     def hash_val(x):
         return hashlib.sha256(str(x).encode()).hexdigest()
