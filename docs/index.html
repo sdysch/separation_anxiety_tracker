@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Progress</title>
+    <title>Separation anxiety progress tracker</title>
     <style>
         body {
             font-family: sans-serif;
             margin: 0;
             padding: 1rem;
             background-color: #f9f9f9;
+            color: #333;
             text-align: center;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         h1 {
             font-size: 1.8rem;
-            color: #333;
         }
 
         img {
@@ -24,6 +25,32 @@
             border: 1px solid #ccc;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .dark {
+            background-color: #121212;
+            color: #f1f1f1;
+        }
+
+        .dark img {
+            border-color: #444;
+            box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+        }
+
+        .toggle-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            background-color: #ddd;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .dark .toggle-btn {
+            background-color: #333;
+            color: #fff;
         }
 
         @media (min-width: 768px) {
@@ -37,7 +64,14 @@
     </style>
 </head>
 <body>
-    <h1>Progress</h1>
+    <button class="toggle-btn" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+    <h1>Separation anxiety progress tracker</h1>
     <img src="plot.png" alt="Generated Plot">
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark');
+        }
+    </script>
 </body>
 </html>
