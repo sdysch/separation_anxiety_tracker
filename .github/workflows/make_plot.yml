@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - 'sa_training.db'
+    branches:
+      - main
 
 jobs:
   export:
