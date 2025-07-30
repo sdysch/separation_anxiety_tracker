@@ -1,4 +1,6 @@
 secrets.yml
 data/*.csv
 *.json
+
 *.png
+!docs/plot.png
