@@ -41,7 +41,7 @@ def create_db(config):
     conn.close()
 
 
-def insert_from_file(filename, config):
+def insert_from_brb_file(filename, config):
 
     df = pd.read_csv(
         filename,
@@ -82,8 +82,8 @@ def main(args):
     if not args.no_setup:
         create_db(config)
 
-    if args.read_file is not None:
-        insert_from_file(args.read_file, config)
+    if args.read_brb_file is not None:
+        insert_from_brb_file(args.read_brb_file, config)
 
 
 if __name__ == '__main__':
@@ -92,7 +92,7 @@ if __name__ == '__main__':
     parser = ArgumentParser()
 
     parser.add_argument('--no-setup', action='store_true')
-    parser.add_argument('--read-file', required=False, default=None)
+    parser.add_argument('--read-brb-file', required=False, default=None)
 
     args = parser.parse_args()
 
