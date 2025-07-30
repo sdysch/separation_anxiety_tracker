@@ -4,3 +4,5 @@ data/*.csv
 
 *.png
 !docs/plot.png
+
+docs/plot.html
