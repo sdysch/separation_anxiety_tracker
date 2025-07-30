@@ -5,11 +5,11 @@ To scrape data from the [app](https://berightbackapp.io/), login and use develop
 Put this in a secrets.yml file (follow the example [here](secrets_example.yml)
 
 ## Overall progress
-![progress](plot.png)
+See progress [here](sdysch.github.io/separation_anxiety_tracker)
 
 
 TODO
-- [ ] Read raw from google sheets
+- [ ] Read raw data from google sheets
 - [ ] Add in warmup support (figure out how to scrape from BRB app)
 - [ ] DB hosting?
 - [ ] Automated read of hosted DB (daily?)
