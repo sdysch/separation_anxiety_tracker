@@ -21,8 +21,14 @@ jobs:
     - name: Install dependencies
       run: pip install pandas matplotlib seaborn numpy pyyaml --upgrade pip
 
-    - name: Setup environment
-      run: source setup.sh
-
     - name: Run export script
       run: python scripts/make_summary_plot.py
+
+    - name: Commit & Push Changes
+      run: |
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git add docs/plot.png docs/index.html
+        git commit -m "Update plot"
+        git push
+

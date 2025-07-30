@@ -42,5 +42,5 @@ sns.scatterplot(
     ax=ax
 )
 
-fig.savefig('plot.png')
+fig.savefig('docs/plot.png')
 
