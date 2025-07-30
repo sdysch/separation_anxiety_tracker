@@ -21,7 +21,7 @@ jobs:
         python-version: '3.11'
 
     - name: Install dependencies
-      run: pip install pandas matplotlib seaborn numpy pyyaml --upgrade pip
+      run: pip install pandas matplotlib seaborn numpy pyyaml plotly --upgrade pip
 
     - name: Run export script
       run: python scripts/make_summary_plot.py
