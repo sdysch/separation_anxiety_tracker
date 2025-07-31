@@ -29,7 +29,9 @@ jobs:
       run: python scripts/make_summary_plot.py
 
     - name: Get timestamp
-      run: date -u +"%Y-%m-%d %H:%M UTC" | sed -i "s/<!--LAST_UPDATED-->/$TIMESTAMP/" docs/index.html
+      run: |
+          TIMESTAMP="$(date -u +"%Y-%m-%d %H:%M UTC")"
+          sed -i "s|LAST_UPDATED|$TIMESTAMP|" docs/index.html
 
     - name: Commit & Push Changes
       env:
