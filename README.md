@@ -5,7 +5,7 @@ To scrape data from the [app](https://berightbackapp.io/), login and use develop
 Put this in a secrets.yml file (follow the example [here](secrets_example.yml)
 
 ## Overall progress
-See progress [here](sdysch.github.io/separation_anxiety_tracker)
+See progress [here](https://max-sa-training.streamlit.app/)
 
 
 TODO
@@ -13,4 +13,4 @@ TODO
 - [ ] Add in warmup support (figure out how to scrape from BRB app)
 - [ ] DB hosting?
 - [ ] Automated read of hosted DB (daily?)
-- [ ] Streamlit?
+- [X] Streamlit?
