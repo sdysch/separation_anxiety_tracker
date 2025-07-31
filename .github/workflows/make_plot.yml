@@ -28,6 +28,9 @@ jobs:
     - name: Run export script
       run: python scripts/make_summary_plot.py
 
+    - name: Get timestamp
+      run: date -u +"%Y-%m-%d %H:%M UTC" | sed -i "s/<!--LAST_UPDATED-->/$TIMESTAMP/" docs/index.html
+
     - name: Commit & Push Changes
       env:
           PAT:
