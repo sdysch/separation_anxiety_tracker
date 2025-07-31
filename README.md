@@ -9,7 +9,8 @@ See progress [here](sdysch.github.io/separation_anxiety_tracker)
 
 
 TODO
-- [ ] Read raw data from google sheets
+- [X] Read raw data from google sheets
 - [ ] Add in warmup support (figure out how to scrape from BRB app)
 - [ ] DB hosting?
 - [ ] Automated read of hosted DB (daily?)
+- [ ] Streamlit?
