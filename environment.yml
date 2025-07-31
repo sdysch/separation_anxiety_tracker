@@ -10,4 +10,6 @@ dependencies:
   - sqlite
   - requests
   - pyyaml
+  - plotly
+  - streamlit
 prefix: /home/sdysch/miniconda3/envs/sa_db
