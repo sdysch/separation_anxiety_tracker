@@ -12,5 +12,7 @@ TODO
 - [X] Read raw data from google sheets
 - [ ] Add in warmup support (figure out how to scrape from BRB app)
 - [ ] DB hosting?
-- [ ] Automated read of hosted DB (daily?)
+- [ ] Automated read of hosted DB (daily? cron from google sheets?)
+- [ ] do not duplicate DB entries
+- [ ] check for rating
 - [X] Streamlit?
