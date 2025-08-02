@@ -1,5 +1,7 @@
 db_name: 'sa_training.db'
 url: 'https://berightbackapp.io/owner/v3/exercises?type=DepartureExercise'
+warmup_url: 'https://berightbackapp.io/owner/v3/exercises/'
 raw_data: 'data/raw_brb_data.csv'
+raw_warmup_data: 'data/raw_brb_data_warmups.csv'
 json_data: 'data/departures_data.json'
 google_sheets_id: '1HYnMXymQXBqlg7zvfF_Da6tOQPwVmah6XBU93QwrxXY'

@@ -20,7 +20,8 @@ def create_db(config):
         target_duration_seconds INTEGER NOT NULL,
         actual_duration_seconds INTEGER NOT NULL,
         rating TEXT CHECK(rating IN ('aced_it', 'ok', 'struggled')) NOT NULL,
-        notes TEXT
+        notes TEXT,
+        UNIQUE (exercise_id, timestamp)
     )
     """)
 
@@ -28,12 +29,12 @@ def create_db(config):
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS warmups (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        datetime TEXT NOT NULL,
         duration_seconds INTEGER NOT NULL,
-        dog_response TEXT,
-        notes TEXT,
-        departure_id INTEGER,
-        FOREIGN KEY (departure_id) REFERENCES departures(id) ON DELETE CASCADE
+        comment TEXT,
+        step_no,
+        warmup_id,
+        exercise_id INTEGER,
+        FOREIGN KEY (exercise_id) REFERENCES departures(id) ON DELETE CASCADE
     )
     """)
 
@@ -116,6 +117,28 @@ def insert_from_google(config):
     conn.close()
 
 
+def insert_from_brb_warmup_file(filename, config):
+
+    df = pd.read_csv(
+        filename,
+        sep='|',
+    )
+
+    df = df.rename(
+        columns={
+            'duration': 'duration_seconds',
+        }
+    )
+
+    conn = get_connection(config['db_name'])
+    cursor = conn.cursor()
+
+    df.to_sql('warmups', conn, if_exists='append', index=False)
+
+    conn.commit()
+    conn.close()
+
+
 def main(args):
 
     config = read_config('config.yml')
@@ -125,6 +148,9 @@ def main(args):
 
     if args.read_brb_file is not None:
         insert_from_brb_file(args.read_brb_file, config)
+
+    if args.read_brb_warmup_file is not None:
+        insert_from_brb_warmup_file(args.read_brb_warmup_file, config)
 
     if args.read_google_sheets:
         insert_from_google(config)
@@ -137,6 +163,7 @@ if __name__ == '__main__':
 
     parser.add_argument('--setup', action='store_true')
     parser.add_argument('--read-brb-file', required=False, default=None)
+    parser.add_argument('--read-brb-warmup-file', required=False, default=None)
     parser.add_argument('--read-google-sheets', action='store_true')
 
     args = parser.parse_args()
