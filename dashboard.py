@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import sqlite3
 import plotly.express as px
+import matplotlib.pyplot as plt
 
 # loading data
 @st.cache_data(ttl=3600)
@@ -91,11 +92,25 @@ def main():
         fig = make_plotly_fig(df)
         st.plotly_chart(fig, use_container_width=True)
 
+    # training hour
+    st.subheader("🕰️ Training hour of day")
+    df['hour'] = pd.to_datetime(df['timestamp']).dt.round('h').dt.hour
+    hour_counts = df['hour'].value_counts()
+    st.bar_chart(hour_counts)
+
     # overall outcomes
     st.subheader("✅ Outcomes Overview")
-    outcome_counts = df['rating'].value_counts()
+    outcome_counts = df['rating'].value_counts().reset_index()
     st.bar_chart(outcome_counts)
+    # fig, ax = plt.subplots(figsize=(5, 5))
+    # ax.pie(
+    #     outcome_counts['count'],
+    #     labels=outcome_counts['rating'],
+    #     autopct='%1.1f%%', shadow=True, startangle=90
+    # )
+    # ax.axis('equal')
 
+    # st.pyplot(fig, use_container_width=True)
 
 
 if __name__ == '__main__':
