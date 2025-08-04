@@ -100,7 +100,9 @@ def main():
 
     # overall outcomes
     st.subheader("✅ Outcomes Overview")
-    outcome_counts = df['rating'].value_counts().reset_index()
+    # outcome_counts = df['rating'].value_counts().reset_index()
+    outcome_counts = df['rating'].value_counts()
+    print(outcome_counts)
     st.bar_chart(outcome_counts)
     # fig, ax = plt.subplots(figsize=(5, 5))
     # ax.pie(
