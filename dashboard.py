@@ -3,12 +3,16 @@ import pandas as pd
 import sqlite3
 import plotly.express as px
 import matplotlib.pyplot as plt
+import os
+import datetime
+
+DB_PATH = 'sa_training.db'
 
 # loading data
 @st.cache_data(ttl=3600)
 def load_data():
 
-    conn = sqlite3.connect('sa_training.db')
+    conn = sqlite3.connect(DB_PATH)
 
     # load data 
     df = pd.read_sql_query("""
@@ -67,6 +71,12 @@ def main():
     st.title('🐾 Max SA Training')
     st.set_page_config(layout='wide')
 
+    # last updated timestamp
+    mod_time = os.path.getmtime(DB_PATH)
+    last_updated = datetime.datetime.fromtimestamp(mod_time).strftime("%Y-%m-%d %H:%M:%S")
+
+    st.markdown(f"**Last updated:** {last_updated}")
+
     # prepare data
     df = load_data()
     df['actual_duration_mins'] = df['actual_duration_seconds'] / 60.
@@ -102,7 +112,6 @@ def main():
     st.subheader("✅ Outcomes Overview")
     # outcome_counts = df['rating'].value_counts().reset_index()
     outcome_counts = df['rating'].value_counts()
-    print(outcome_counts)
     st.bar_chart(outcome_counts)
     # fig, ax = plt.subplots(figsize=(5, 5))
     # ax.pie(
