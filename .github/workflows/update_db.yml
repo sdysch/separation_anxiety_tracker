@@ -27,6 +27,12 @@ jobs:
       - name: Setup secrets
         run: echo "${{ secrets.GH_KEY }}" > secrets.yml
 
+      - name: Get old max date
+        id: old_max_date
+        run: |
+          OLD_MAX_DATE=$(sqlite3 sa_training.db "SELECT MAX(date_column) FROM departures;")
+          echo "OLD_MAX_DATE=$OLD_MAX_DATE" >> $GITHUB_ENV
+
       - name: Run update script
         run: |
           export PYTHONPATH=$(pwd)/src:$PYTHONPATH
@@ -34,16 +40,21 @@ jobs:
           python scripts/format_raw_data.py
           python db_main.py --read-brb-file data/formatted_data.csv --read-brb-warmup-file data/raw_brb_data_warmups.csv
 
-      - name: Commit & Push Changes
+      - name: Commit & push if new data
         env:
             PAT:
                 ${{ secrets.GH_PAT }}
+            OLD_MAX_DATE: ${{ env.OLD_MAX_DATE }}
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add sa_training.db
-          git commit -m "Update database" || echo "No changes to commit"
-          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git
-          # git push https://x-access-token:${PAT}@github.com/${{ github.repository }}.git
-          git remote get-url origin
-          git push origin HEAD:main
+          NEW_MAX_DATE=$(sqlite3 sa_training.db "SELECT MAX(date_column) FROM departures;")
+          if [[ "$NEW_MAX_DATE" > "$OLD_MAX_DATE" ]]; then
+            git config user.name github-actions
+            git config user.email github-actions@github.com
+            git add sa_training.db
+            git commit -m "Update database" || echo "No changes to commit"
+            git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git
+            git remote get-url origin
+            git push origin HEAD:main
+          else
+              echo "No new data. Skipping commit."
+          fi

@@ -71,7 +71,7 @@ def insert_from_brb_file(filename, config):
     conn = get_connection(config['db_name'])
     cursor = conn.cursor()
 
-    df.to_sql('departures', conn, if_exists='append', index=False)
+    df.to_sql('departures', conn, if_exists='replace', index=False)
 
     conn.commit()
     conn.close()
@@ -111,7 +111,7 @@ def insert_from_google(config):
     conn = get_connection(config['db_name'])
     cursor = conn.cursor()
 
-    df.to_sql('departures', conn, if_exists='append', index=False)
+    df.to_sql('departures', conn, if_exists='replace', index=False)
 
     conn.commit()
     conn.close()
@@ -133,7 +133,7 @@ def insert_from_brb_warmup_file(filename, config):
     conn = get_connection(config['db_name'])
     cursor = conn.cursor()
 
-    df.to_sql('warmups', conn, if_exists='append', index=False)
+    df.to_sql('warmups', conn, if_exists='replace', index=False)
 
     conn.commit()
     conn.close()
