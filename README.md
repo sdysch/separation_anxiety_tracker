@@ -1,4 +1,6 @@
 # separation_anxiety_tracker
+[![Update Database](https://github.com/sdysch/separation_anxiety_tracker/actions/workflows/update_db.yml/badge.svg)](https://github.com/sdysch/separation_anxiety_tracker/actions/workflows/update_db.yml)
+
 Tracking training progress for my dog's separation anxiety, based on Julie Naismith's be right back method
 
 To scrape data from the [app](https://berightbackapp.io/), login and use developer console to find the session cookie.
@@ -10,9 +12,10 @@ See progress [here](https://max-sa-training.streamlit.app/)
 
 TODO
 - [X] Read raw data from google sheets
-- [ ] Add in warmup support (figure out how to scrape from BRB app)
+- [X] Add in warmup support (figure out how to scrape from BRB app)
 - [ ] DB hosting?
-- [ ] Automated read of hosted DB (daily? cron from google sheets?)
+- [X] Automated read of hosted DB (daily? cron from google sheets?)
+	* Kinda done with scheduled github actions
 - [ ] do not duplicate DB entries
 - [ ] check for rating
 - [X] Streamlit?
