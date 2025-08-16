@@ -30,7 +30,7 @@ jobs:
       - name: Get old max date
         id: old_max_date
         run: |
-          OLD_MAX_DATE=$(sqlite3 sa_training.db "SELECT MAX(date_column) FROM departures;")
+          OLD_MAX_DATE=$(sqlite3 sa_training.db "SELECT MAX(timestamp) FROM departures;")
           echo "OLD_MAX_DATE=$OLD_MAX_DATE" >> $GITHUB_ENV
 
       - name: Run update script
@@ -46,7 +46,7 @@ jobs:
                 ${{ secrets.GH_PAT }}
             OLD_MAX_DATE: ${{ env.OLD_MAX_DATE }}
         run: |
-          NEW_MAX_DATE=$(sqlite3 sa_training.db "SELECT MAX(date_column) FROM departures;")
+          NEW_MAX_DATE=$(sqlite3 sa_training.db "SELECT MAX(timestamp) FROM departures;")
           if [[ "$NEW_MAX_DATE" > "$OLD_MAX_DATE" ]]; then
             git config user.name github-actions
             git config user.email github-actions@github.com
