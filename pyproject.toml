@@ -29,6 +29,7 @@ where = ['src']
 [project.optional-dependencies]
 dev = [
   'black',
+  'pre-commit'
 ]
 
 [tool.black]
