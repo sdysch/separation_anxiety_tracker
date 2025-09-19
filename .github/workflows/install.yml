@@ -28,3 +28,7 @@ jobs:
       - name: Run Black
         run: |
           black --check --skip-string-normalization src
+
+      - name: Typing checks
+        run: |
+          mypy src
