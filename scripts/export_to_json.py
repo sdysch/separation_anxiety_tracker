@@ -16,4 +16,3 @@ data = [dict(zip(columns, row)) for row in rows]
 with open(config['json_data'], 'w') as f:
     json.dump(data, f, indent=4)
 conn.close()
-

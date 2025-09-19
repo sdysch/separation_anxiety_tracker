@@ -12,7 +12,8 @@ def create_db(config):
     cursor = conn.cursor()
 
     # create table for departures
-    cursor.execute("""
+    cursor.execute(
+        """
     CREATE TABLE IF NOT EXISTS departures (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         exercise_id INTEGER NOT NULL,
@@ -23,10 +24,12 @@ def create_db(config):
         notes TEXT,
         UNIQUE (exercise_id, timestamp)
     )
-    """)
+    """
+    )
 
     # create table for warmups
-    cursor.execute("""
+    cursor.execute(
+        """
     CREATE TABLE IF NOT EXISTS warmups (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         duration_seconds INTEGER NOT NULL,
@@ -36,7 +39,8 @@ def create_db(config):
         exercise_id INTEGER,
         FOREIGN KEY (exercise_id) REFERENCES departures(id) ON DELETE CASCADE
     )
-    """)
+    """
+    )
 
     # commit and close
     conn.commit()
@@ -54,8 +58,8 @@ def insert_from_brb_file(filename, config):
             'result',
             'target_duration',
             'actual_duration',
-            'notes'
-        ]
+            'notes',
+        ],
     )
 
     df = df.rename(
@@ -81,11 +85,7 @@ def insert_from_google(config):
 
     id = config['google_sheets_id']
     path = f'https://docs.google.com/spreadsheets/d/{id}/gviz/tq?tqx=out:csv'
-    df = pd.read_csv(
-       path,
-       parse_dates=['date'],
-       index_col=False
-    )
+    df = pd.read_csv(path, parse_dates=['date'], index_col=False)
 
     df['notes'] = df['notes'].fillna('')
 
@@ -96,17 +96,19 @@ def insert_from_google(config):
     df['exercise_id'] = df['date'].apply(hash_val)
 
     df['timestamp'] = df['date']
-    df['target_duration_seconds'] = df['target_min'] * 60.
-    df['actual_duration_seconds'] = df['actual_min'] * 60.
+    df['target_duration_seconds'] = df['target_min'] * 60.0
+    df['actual_duration_seconds'] = df['actual_min'] * 60.0
 
-    df = df[[
-        'exercise_id',
-        'timestamp',
-        'rating',
-        'target_duration_seconds',
-        'actual_duration_seconds',
-        'notes'
-    ]]
+    df = df[
+        [
+            'exercise_id',
+            'timestamp',
+            'rating',
+            'target_duration_seconds',
+            'actual_duration_seconds',
+            'notes',
+        ]
+    ]
 
     conn = get_connection(config['db_name'])
     cursor = conn.cursor()
@@ -159,6 +161,7 @@ def main(args):
 if __name__ == '__main__':
 
     from argparse import ArgumentParser
+
     parser = ArgumentParser()
 
     parser.add_argument('--setup', action='store_true')
@@ -168,6 +171,4 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-
     main(args)
-
