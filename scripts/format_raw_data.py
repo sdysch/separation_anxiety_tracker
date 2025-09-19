@@ -11,13 +11,12 @@ df = pd.read_csv(
         'exercise_time',
         'result',
         'target_duration',
-       'actual_duration',
-       'num_steps',
-       'total_duration'
-   ]
+        'actual_duration',
+        'num_steps',
+        'total_duration',
+    ],
 )
 
 df['notes'] = ''
 
 df.to_csv('data/formatted_data.csv', index=False)
-

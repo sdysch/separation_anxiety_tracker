@@ -8,16 +8,20 @@ import datetime
 
 DB_PATH = 'sa_training.db'
 
+
 # loading data
 @st.cache_data(ttl=3600)
 def load_data():
 
     conn = sqlite3.connect(DB_PATH)
 
-    # load data 
-    df = pd.read_sql_query("""
+    # load data
+    df = pd.read_sql_query(
+        """
         SELECT timestamp, actual_duration_seconds, rating FROM departures
-    """, conn)
+    """,
+        conn,
+    )
 
     conn.close()
 
@@ -30,20 +34,10 @@ def make_plotly_fig(df):
 
     df = df.sort_values(by=x)
 
-    fig = px.scatter(
-        df,
-        x=x,
-        y=y,
-        symbol='rating',
-        color='rating'
-    )
+    fig = px.scatter(df, x=x, y=y, symbol='rating', color='rating')
 
     fig.add_scatter(
-        x=df[x],
-        y=df[y],
-        mode='lines',
-        line=dict(color='gray'),
-        showlegend=False
+        x=df[x], y=df[y], mode='lines', line=dict(color='gray'), showlegend=False
     )
 
     # update symbol size
@@ -51,14 +45,8 @@ def make_plotly_fig(df):
 
     # update font size
     fig.update_layout(
-        xaxis=dict(
-            title_font=dict(size=18),
-            tickfont=dict(size=14)
-        ),
-        yaxis=dict(
-            title_font=dict(size=18),
-            tickfont=dict(size=14)
-        )
+        xaxis=dict(title_font=dict(size=18), tickfont=dict(size=14)),
+        yaxis=dict(title_font=dict(size=18), tickfont=dict(size=14)),
     )
 
     return fig
@@ -73,13 +61,15 @@ def main():
 
     # last updated timestamp
     mod_time = os.path.getmtime(DB_PATH)
-    last_updated = datetime.datetime.fromtimestamp(mod_time).strftime("%Y-%m-%d %H:%M:%S")
+    last_updated = datetime.datetime.fromtimestamp(mod_time).strftime(
+        "%Y-%m-%d %H:%M:%S"
+    )
 
     st.markdown(f"**Last updated:** {last_updated}")
 
     # prepare data
     df = load_data()
-    df['actual_duration_mins'] = df['actual_duration_seconds'] / 60.
+    df['actual_duration_mins'] = df['actual_duration_seconds'] / 60.0
 
     col1, col2 = st.columns(2)
 
@@ -126,4 +116,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
