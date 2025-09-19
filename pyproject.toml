@@ -1,0 +1,51 @@
+[build-system]
+requires = ['setuptools>=61.0']
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = 'separation-anxiety-tracker'
+version = '0.1.0'
+description = 'Separation anxiety tracker'
+authors = [
+  { name = 'Sam Salling-Dysch', email = 'sdysch94+fromsadb@gmail.com' }
+]
+readme = 'README.md'
+requires-python = '>=3.12'
+
+dependencies = [
+  'matplotlib',
+  'seaborn',
+  'pandas',
+  'numpy',
+  'requests',
+  'pyyaml',
+  'plotly',
+  'streamlit',
+]
+
+[tool.setuptools.packages.find]
+where = ['src']
+
+[project.optional-dependencies]
+dev = [
+  'black',
+]
+
+[tool.black]
+line-length = 88
+skip-string-normalization = true
+target-version = ['py312']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
