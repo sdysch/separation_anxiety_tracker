@@ -22,7 +22,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip black mypy
+          python -m pip install --upgrade pip black mypy types-PyYAML
           
 
       - name: Run Black
