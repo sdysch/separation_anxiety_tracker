@@ -10,6 +10,6 @@ def get_connection(name: str) -> sqlite3.Connection:
 
 
 def read_config(file_path: str) -> dict[str, Any]:
-    with open(file_path, 'r') as file:
+    with open(file_path, "r") as file:
         config = yaml.safe_load(file)
     return cast(dict[str, Any], config)

@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import os
 import datetime
 
-DB_PATH = 'sa_training.db'
+DB_PATH = "sa_training.db"
 
 
 # loading data
@@ -29,15 +29,15 @@ def load_data():
 
 
 def make_plotly_fig(df):
-    y = 'actual_duration_mins'
-    x = 'timestamp'
+    y = "actual_duration_mins"
+    x = "timestamp"
 
     df = df.sort_values(by=x)
 
-    fig = px.scatter(df, x=x, y=y, symbol='rating', color='rating')
+    fig = px.scatter(df, x=x, y=y, symbol="rating", color="rating")
 
     fig.add_scatter(
-        x=df[x], y=df[y], mode='lines', line=dict(color='gray'), showlegend=False
+        x=df[x], y=df[y], mode="lines", line=dict(color="gray"), showlegend=False
     )
 
     # update symbol size
@@ -55,9 +55,9 @@ def make_plotly_fig(df):
 def main():
 
     # page config
-    st.set_page_config(page_title='Max SA Tracker', layout='centered')
-    st.title('🐾 Max SA Training')
-    st.set_page_config(layout='wide')
+    st.set_page_config(page_title="Max SA Tracker", layout="centered")
+    st.title("🐾 Max SA Training")
+    st.set_page_config(layout="wide")
 
     # last updated timestamp
     mod_time = os.path.getmtime(DB_PATH)
@@ -69,14 +69,14 @@ def main():
 
     # prepare data
     df = load_data()
-    df['actual_duration_mins'] = df['actual_duration_seconds'] / 60.0
+    df["actual_duration_mins"] = df["actual_duration_seconds"] / 60.0
 
     col1, col2 = st.columns(2)
 
     # most recent
     with col1:
-        st.subheader('📅 Most Recent Session')
-        latest = df.sort_values(by='timestamp', ascending=False).iloc[0]
+        st.subheader("📅 Most Recent Session")
+        latest = df.sort_values(by="timestamp", ascending=False).iloc[0]
 
         st.markdown(
             f"**Date**: {latest['timestamp']}  \n"
@@ -94,14 +94,14 @@ def main():
 
     # training hour
     st.subheader("🕰️ Training hour of day")
-    df['hour'] = pd.to_datetime(df['timestamp']).dt.round('h').dt.hour
-    hour_counts = df['hour'].value_counts()
+    df["hour"] = pd.to_datetime(df["timestamp"]).dt.round("h").dt.hour
+    hour_counts = df["hour"].value_counts()
     st.bar_chart(hour_counts)
 
     # overall outcomes
     st.subheader("✅ Outcomes Overview")
     # outcome_counts = df['rating'].value_counts().reset_index()
-    outcome_counts = df['rating'].value_counts()
+    outcome_counts = df["rating"].value_counts()
     st.bar_chart(outcome_counts)
     # fig, ax = plt.subplots(figsize=(5, 5))
     # ax.pie(
@@ -114,5 +114,5 @@ def main():
     # st.pyplot(fig, use_container_width=True)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
