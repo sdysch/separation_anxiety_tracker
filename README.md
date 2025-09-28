@@ -17,12 +17,6 @@ conda activate sa_tracker
 pip install -e .
 ```
 
-### Install optional dependencies
-```bash
-pip install -e '.[dev]'
-pre-commit install
-```
-
 TODO
 - [X] Read raw data from google sheets
 - [X] Add in warmup support (figure out how to scrape from BRB app)
