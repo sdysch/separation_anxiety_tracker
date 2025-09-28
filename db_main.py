@@ -8,7 +8,7 @@ from utils import read_config, get_connection
 def create_db(config):
 
     # connect to SQLite database (or create it)
-    conn = get_connection(config['db_name'])
+    conn = get_connection(config["db_name"])
     cursor = conn.cursor()
 
     # create table for departures
@@ -51,31 +51,31 @@ def insert_from_brb_file(filename, config):
 
     df = pd.read_csv(
         filename,
-        parse_dates=['exercise_time'],
+        parse_dates=["exercise_time"],
         usecols=[
-            'id',
-            'exercise_time',
-            'result',
-            'target_duration',
-            'actual_duration',
-            'notes',
+            "id",
+            "exercise_time",
+            "result",
+            "target_duration",
+            "actual_duration",
+            "notes",
         ],
     )
 
     df = df.rename(
         columns={
-            'id': 'exercise_id',
-            'exercise_time': 'timestamp',
-            'result': 'rating',
-            'target_duration': 'target_duration_seconds',
-            'actual_duration': 'actual_duration_seconds',
+            "id": "exercise_id",
+            "exercise_time": "timestamp",
+            "result": "rating",
+            "target_duration": "target_duration_seconds",
+            "actual_duration": "actual_duration_seconds",
         }
     )
 
-    conn = get_connection(config['db_name'])
+    conn = get_connection(config["db_name"])
     cursor = conn.cursor()
 
-    df.to_sql('departures', conn, if_exists='replace', index=False)
+    df.to_sql("departures", conn, if_exists="replace", index=False)
 
     conn.commit()
     conn.close()
@@ -83,37 +83,37 @@ def insert_from_brb_file(filename, config):
 
 def insert_from_google(config):
 
-    id = config['google_sheets_id']
-    path = f'https://docs.google.com/spreadsheets/d/{id}/gviz/tq?tqx=out:csv'
-    df = pd.read_csv(path, parse_dates=['date'], index_col=False)
+    id = config["google_sheets_id"]
+    path = f"https://docs.google.com/spreadsheets/d/{id}/gviz/tq?tqx=out:csv"
+    df = pd.read_csv(path, parse_dates=["date"], index_col=False)
 
-    df['notes'] = df['notes'].fillna('')
+    df["notes"] = df["notes"].fillna("")
 
     # generate an exercise ID by hashing the date. Not a great solution because this assumes that we will only ever be doing 1 exercise per day
     def hash_val(x):
         return hashlib.sha256(str(x).encode()).hexdigest()
 
-    df['exercise_id'] = df['date'].apply(hash_val)
+    df["exercise_id"] = df["date"].apply(hash_val)
 
-    df['timestamp'] = df['date']
-    df['target_duration_seconds'] = df['target_min'] * 60.0
-    df['actual_duration_seconds'] = df['actual_min'] * 60.0
+    df["timestamp"] = df["date"]
+    df["target_duration_seconds"] = df["target_min"] * 60.0
+    df["actual_duration_seconds"] = df["actual_min"] * 60.0
 
     df = df[
         [
-            'exercise_id',
-            'timestamp',
-            'rating',
-            'target_duration_seconds',
-            'actual_duration_seconds',
-            'notes',
+            "exercise_id",
+            "timestamp",
+            "rating",
+            "target_duration_seconds",
+            "actual_duration_seconds",
+            "notes",
         ]
     ]
 
-    conn = get_connection(config['db_name'])
+    conn = get_connection(config["db_name"])
     cursor = conn.cursor()
 
-    df.to_sql('departures', conn, if_exists='replace', index=False)
+    df.to_sql("departures", conn, if_exists="replace", index=False)
 
     conn.commit()
     conn.close()
@@ -123,19 +123,19 @@ def insert_from_brb_warmup_file(filename, config):
 
     df = pd.read_csv(
         filename,
-        sep='|',
+        sep="|",
     )
 
     df = df.rename(
         columns={
-            'duration': 'duration_seconds',
+            "duration": "duration_seconds",
         }
     )
 
-    conn = get_connection(config['db_name'])
+    conn = get_connection(config["db_name"])
     cursor = conn.cursor()
 
-    df.to_sql('warmups', conn, if_exists='replace', index=False)
+    df.to_sql("warmups", conn, if_exists="replace", index=False)
 
     conn.commit()
     conn.close()
@@ -143,7 +143,7 @@ def insert_from_brb_warmup_file(filename, config):
 
 def main(args):
 
-    config = read_config('config.yml')
+    config = read_config("config.yml")
 
     if args.setup:
         create_db(config)
@@ -158,16 +158,16 @@ def main(args):
         insert_from_google(config)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     from argparse import ArgumentParser
 
     parser = ArgumentParser()
 
-    parser.add_argument('--setup', action='store_true')
-    parser.add_argument('--read-brb-file', required=False, default=None)
-    parser.add_argument('--read-brb-warmup-file', required=False, default=None)
-    parser.add_argument('--read-google-sheets', action='store_true')
+    parser.add_argument("--setup", action="store_true")
+    parser.add_argument("--read-brb-file", required=False, default=None)
+    parser.add_argument("--read-brb-warmup-file", required=False, default=None)
+    parser.add_argument("--read-google-sheets", action="store_true")
 
     args = parser.parse_args()
 

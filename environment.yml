@@ -3,13 +3,4 @@ channels:
   - defaults
 dependencies:
   - python=3.12
-  - matplotlib
-  - seaborn
-  - pandas
-  - numpy
-  - sqlite
-  - requests
-  - pyyaml
-  - plotly
-  - streamlit
 prefix: /home/sdysch/miniconda3/envs/sa_db
