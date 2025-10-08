@@ -1,6 +1,0 @@
-name: sa_db
-channels:
-  - defaults
-dependencies:
-  - python=3.12
-prefix: /home/sdysch/miniconda3/envs/sa_db
