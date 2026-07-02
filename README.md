@@ -10,6 +10,8 @@ Put this in a secrets.yml file (follow the example [here](secrets_example.yml)
 ## Overall progress
 See progress [here](https://max-sa-training.streamlit.app/)
 
+![Dashboard screenshot](figs/screenshot-2026-07-02_14-21-34.png)
+
 ## Install
 ```bash
 conda create -n sa_tracker python=3.12
