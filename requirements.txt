@@ -56,7 +56,7 @@ tornado==6.5.2
 types-PyYAML==6.0.12.20250915
 typing_extensions==4.15.0
 tzdata==2025.2
-urllib3==2.5.0
+urllib3==2.6.0
 virtualenv==20.34.0
 watchdog==6.0.0
 wheel==0.45.1
